@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz Aniversário 🎉</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  color: #333;
+}
+
+.container {
+  padding: 20px;
+}
+
+button {
+  font-size: 22px;
+  padding: 15px 25px;
+  border: none;
+  border-radius: 10px;
+  background: #ff4d6d;
+  color: white;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+#message {
+  font-size: 20px;
+  margin-top: 20px;
+  min-height: 60px;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🎁 Toque no presente</h1>
+  <button onclick="abrirPresente()">Abrir</button>
+
+  <div id="message" class="hidden"></div>
+</div>
+
+<canvas id="confetti"></canvas>
+
+<script>
+// TEXTO PERSONALIZÁVEL
+const texto = "Feliz aniversário, minha irmã! 💖\n\nQue seu dia seja incrível e cheio de alegria. Você é muito especial pra mim! 🎉";
+
+// EFEITO DIGITANDO
+function escreverTexto(elemento, texto, i = 0) {
+  if (i < texto.length) {
+    elemento.innerHTML += texto.charAt(i) === "\n" ? "<br>" : texto.charAt(i);
+    setTimeout(() => escreverTexto(elemento, texto, i + 1), 40);
+  }
+}
+
+// AO CLICAR
+function abrirPresente() {
+  const msg = document.getElementById("message");
+  msg.classList.remove("hidden");
+  escreverTexto(msg, texto);
+  iniciarConfete();
+}
+
+// CONFETE SIMPLES
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let confetes = [];
+
+function iniciarConfete() {
+  for (let i = 0; i < 100; i++) {
+    confetes.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 6 + 2,
+      d: Math.random() * 50
+    });
+  }
+  animarConfete();
+}
+
+function animarConfete() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  confetes.forEach(c => {
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+    ctx.fillStyle = "hsl(" + Math.random() * 360 + ",100%,50%)";
+    ctx.fill();
+  });
+
+  atualizarConfete();
+  requestAnimationFrame(animarConfete);
+}
+
+function atualizarConfete() {
+  confetes.forEach(c => {
+    c.y += Math.cos(c.d) + 2;
+    c.x += Math.sin(c.d);
+
+    if (c.y > canvas.height) {
+      c.y = 0;
+      c.x = Math.random() * canvas.width;
+    }
+  });
+}
+</script>
+
+</body>
+</html>
