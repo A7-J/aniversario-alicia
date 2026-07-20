@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Feliz Aniversário 🎉</title>
+<title>Feliz Aniversário Alicia 🎉</title>
 
 <style>
 body {
@@ -43,6 +42,23 @@ button {
   min-height: 60px;
 }
 
+/* FOTO */
+#foto {
+  margin-top: 20px;
+  width: 220px;
+  border-radius: 15px;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: 1s;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+#foto.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* CONFETE */
 canvas {
   position: fixed;
   top: 0;
@@ -60,13 +76,16 @@ canvas {
   <button onclick="abrirPresente()">Abrir</button>
 
   <div id="message" class="hidden"></div>
+
+  <!-- FOTO -->
+  <img id="foto" src="foto.jpg" class="hidden" alt="Nós dois 💖">
 </div>
 
 <canvas id="confetti"></canvas>
 
 <script>
-// TEXTO PERSONALIZÁVEL
-const texto = "Feliz aniversário, minha irmã! 💖\n\nQue seu dia seja incrível e cheio de alegria. Você é muito especial pra mim! 🎉";
+// TEXTO PERSONALIZADO
+const texto = "Feliz aniversário, Alicia! 💖\n\nQue seu dia seja incrível e cheio de alegria.\nVocê é muito especial pra mim! 🎉";
 
 // EFEITO DIGITANDO
 function escreverTexto(elemento, texto, i = 0) {
@@ -80,11 +99,20 @@ function escreverTexto(elemento, texto, i = 0) {
 function abrirPresente() {
   const msg = document.getElementById("message");
   msg.classList.remove("hidden");
+
   escreverTexto(msg, texto);
+
   iniciarConfete();
+
+  // Mostrar foto depois de um tempo
+  const foto = document.getElementById("foto");
+  setTimeout(() => {
+    foto.classList.remove("hidden");
+    foto.classList.add("show");
+  }, 1800);
 }
 
-// CONFETE SIMPLES
+// CONFETE
 const canvas = document.getElementById("confetti");
 const ctx = canvas.getContext("2d");
 
@@ -94,7 +122,7 @@ canvas.height = window.innerHeight;
 let confetes = [];
 
 function iniciarConfete() {
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 120; i++) {
     confetes.push({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
